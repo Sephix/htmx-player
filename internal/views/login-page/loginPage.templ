@@ -1,0 +1,13 @@
+package loginpage
+
+import "github.com/sephix/htmx-player/internal/components/header"
+import "github.com/sephix/htmx-player/internal/components/login"
+import "github.com/sephix/htmx-player/internal/views/base"
+
+templ LoginPage() {
+	@basepage.BasePage() {
+		@Header.Header()
+		@Login.Login()
+	}
+}
+
