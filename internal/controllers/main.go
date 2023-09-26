@@ -1,14 +1,15 @@
 package controllers
 
 import (
+	"fmt"
+	"html/template"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	homecontent "github.com/sephix/htmx-player/internal/components/home-content"
 	"github.com/sephix/htmx-player/internal/controllers/app"
 	"github.com/sephix/htmx-player/internal/controllers/home"
+	"github.com/sephix/htmx-player/internal/controllers/image"
 	"github.com/sephix/htmx-player/internal/controllers/status"
-	loginpage "github.com/sephix/htmx-player/internal/views/login-page"
 )
 
 func InitController(router *gin.Engine) {
@@ -16,6 +17,7 @@ func InitController(router *gin.Engine) {
 
 	router.GET("/login", renderLoginPage)
 	router.POST("/login", handleLogin)
+	router.GET("/image/:id", image.GetImageById)
 	baseRouter := router.Group("/", cookieAuth)
 
 	app.App(baseRouter)
@@ -29,8 +31,19 @@ func cookieAuth(c *gin.Context) {
 }
 
 func renderLoginPage(c *gin.Context) {
-	loginPage := loginpage.LoginPage()
-	loginPage.Render(c.Request.Context(), c.Writer)
+	files := []string{
+		"./templates/views/base.html",
+		"./templates/views/loginPage.html",
+		"./templates/components/header.html",
+		"./templates/components/login.html",
+	}
+	tmpl, err := template.ParseFiles(files...)
+	if err != nil {
+		fmt.Println(err.Error())
+	} else {
+		fmt.Println("PLOP")
+		tmpl.ExecuteTemplate(c.Writer, "views/base.html", nil)
+	}
 }
 
 func handleLogin(c *gin.Context) {
@@ -39,7 +52,7 @@ func handleLogin(c *gin.Context) {
 	if header := c.GetHeader("Hx-Request"); header == "true" {
 		c.Header("HX-Push", "/")
 		c.Header("Content-Type", "text/html")
-		homecontent.MainContent(home.MockArtists).Render(c.Request.Context(), c.Writer)
+		home.RenderHome(c)
 	} else {
 		c.Header("location", "/")
 	}

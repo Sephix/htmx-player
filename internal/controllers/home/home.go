@@ -1,30 +1,29 @@
 package home
 
 import (
+	"fmt"
+	"html/template"
+
 	"github.com/gin-gonic/gin"
-	homecontent "github.com/sephix/htmx-player/internal/components/home-content"
-	"github.com/sephix/htmx-player/internal/data/artist"
-	homepage "github.com/sephix/htmx-player/internal/views/home-page"
+	"github.com/sephix/htmx-player/internal/data"
 )
 
-var MockArtists []artist.Artist = []artist.Artist{
-	{Name: "John Lennon", Img: "1"},
-	{Name: "Paul McCartney", Img: "2"},
-	{Name: "George Harrison", Img: "3"},
-	{Name: "Ringo Star", Img: "4"},
-	{Name: "The Beatles", Img: "5"},
-	{Name: "The White Stripes", Img: "6"},
-	{Name: "Jack White", Img: "7"},
-	{Name: "Taylor Swift", Img: "8"},
-	{Name: "The Red Hot Chili Peppers", Img: "9"},
-	{Name: "John Frusciante", Img: "10"},
-}
-
 func RenderHome(c *gin.Context) {
-
+	artists := data.GetAllArtists()
 	if header := c.GetHeader("Hx-Request"); header == "true" {
-		homecontent.MainContent(MockArtists).Render(c.Request.Context(), c.Writer)
+		c.HTML(200, "components/homeContent.html", artists)
 	} else {
-		homepage.HomePage(MockArtists).Render(c.Request.Context(), c.Writer)
+		files := []string{
+			"./templates/views/base.html",
+			"./templates/views/homePage.html",
+			"./templates/components/header.html",
+			"./templates/components/homeContent.html",
+		}
+		tmpl, err := template.ParseFiles(files...)
+		if err != nil {
+			fmt.Println(err.Error())
+		} else {
+			tmpl.ExecuteTemplate(c.Writer, "views/base.html", artists)
+		}
 	}
 }

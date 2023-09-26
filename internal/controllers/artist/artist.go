@@ -1,27 +1,44 @@
 package artist
 
 import (
+	"fmt"
+	"net/http"
 	"strconv"
 
-	"github.com/gin-gonic/gin"
-	artistcontent "github.com/sephix/htmx-player/internal/components/artist-content"
-	"github.com/sephix/htmx-player/internal/data/artist"
-)
+	"html/template"
 
-var MockArtists []artist.Artist = []artist.Artist{
-	{Name: "John Lennon", Img: "1"},
-	{Name: "Paul McCartney", Img: "2"},
-	{Name: "George Harrison", Img: "3"},
-	{Name: "Ringo Star", Img: "4"},
-	{Name: "The Beatles", Img: "5"},
-	{Name: "The White Stripes", Img: "6"},
-	{Name: "Jack White", Img: "7"},
-	{Name: "Taylor Swift", Img: "8"},
-	{Name: "The Red Hot Chili Peppers", Img: "9"},
-	{Name: "John Frusciante", Img: "10"},
-}
+	"github.com/gin-gonic/gin"
+	"github.com/sephix/htmx-player/internal/data"
+)
 
 func RenderArtist(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
-	artistcontent.ArtistContent(MockArtists[id-1]).Render(c.Request.Context(), c.Writer)
+
+	artist := data.GetArtistById(id)
+	albums := data.GetAlbumByArtistId(id)
+
+	fmt.Println("Alb img: ", albums[0].Img)
+
+	if header := c.GetHeader("Hx-Request"); header == "true" {
+		c.HTML(http.StatusOK, "components/artistContent.html", gin.H{
+			"artist": artist,
+			"albums": albums,
+		})
+	} else {
+		files := []string{
+			"./templates/views/base.html",
+			"./templates/views/artistPage.html",
+			"./templates/components/header.html",
+			"./templates/components/artistContent.html",
+		}
+		tmpl, err := template.ParseFiles(files...)
+		if err != nil {
+			fmt.Println(err.Error())
+		} else {
+			tmpl.ExecuteTemplate(c.Writer, "views/base.html", gin.H{
+				"artist": artist,
+				"albums": albums,
+			})
+		}
+	}
 }
