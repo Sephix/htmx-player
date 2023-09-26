@@ -534,10 +534,6 @@ video {
   --tw-backdrop-sepia:  ;
 }
 
-.absolute {
-  position: absolute;
-}
-
 .sticky {
   position: sticky;
 }
@@ -552,14 +548,6 @@ video {
 
 .m-4 {
   margin: 1rem;
-}
-
-.mb-1 {
-  margin-bottom: 0.25rem;
-}
-
-.mb-4 {
-  margin-bottom: 1rem;
 }
 
 .mb-8 {
@@ -757,10 +745,6 @@ video {
 
 .font-extrabold {
   font-weight: 800;
-}
-
-.font-extralight {
-  font-weight: 200;
 }
 
 .font-light {
