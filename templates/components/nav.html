@@ -1,0 +1,27 @@
+{{ define "activeElement"}}
+<li
+  class="text-rose-500 border border-l-4 border-rose-500 border-y-0 border-r-0 text-center"
+>
+  {{ .Title}}
+</li>
+{{end}} {{ define "defaultElement"}}
+<li
+  class="cursor-pointer text-center"
+  hx-get="/{{ .Link }}"
+  hx-target="#main"
+  hx-select="#main"
+  hx-swap="outerHTML transition:true"
+  hx-push-url="true"
+>
+  {{ .Title}}
+</li>
+{{end}} {{ define "components/nav.html" }}
+<nav
+  class="bg-zinc-800 h-screen w-48 flex shrink-0 flex-col justify-center sticky top-0 left-0 border-r border-zinc-700"
+>
+  <ul class="flex flex-col gap-8 justify-center text-zinc-50 font-bold">
+    {{ range $item := .nav}} {{ if $item.IsActive }} {{ template "activeElement"
+    $item }}{{ else }} {{ template "defaultElement" $item }} {{ end }} {{ end }}
+  </ul>
+</nav>
+{{ end }}

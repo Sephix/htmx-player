@@ -7,7 +7,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/sephix/htmx-player/internal/controllers/app"
-	"github.com/sephix/htmx-player/internal/controllers/home"
 	"github.com/sephix/htmx-player/internal/controllers/image"
 	"github.com/sephix/htmx-player/internal/controllers/status"
 )
@@ -41,8 +40,7 @@ func renderLoginPage(c *gin.Context) {
 	if err != nil {
 		fmt.Println(err.Error())
 	} else {
-		fmt.Println("PLOP")
-		tmpl.ExecuteTemplate(c.Writer, "views/base.html", nil)
+		tmpl.ExecuteTemplate(c.Writer, "views/base.html", gin.H{"showSearch": false})
 	}
 }
 
@@ -50,9 +48,7 @@ func handleLogin(c *gin.Context) {
 	c.SetCookie("LOGGED", "true", 3600, "/", "localhost", false, true)
 
 	if header := c.GetHeader("Hx-Request"); header == "true" {
-		c.Header("HX-Push", "/")
-		c.Header("Content-Type", "text/html")
-		home.RenderHome(c)
+		c.Header("HX-Location", "/")
 	} else {
 		c.Header("location", "/")
 	}

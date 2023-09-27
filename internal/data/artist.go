@@ -21,9 +21,10 @@ type Album struct {
 	Img         int64
 }
 
-func GetAllArtists() []Artist {
+func GetAllArtists(name string) []Artist {
+	fmt.Println("Find artists with name: ", name)
 	db := GetDb()
-	rows, _ := db.Query("select artists.id, artists.name, artists.img, artists.deezer_id from artists")
+	rows, _ := db.Query("select artists.id, artists.name, artists.img, artists.deezer_id from artists where artists.name like ?", "%"+name+"%")
 
 	defer rows.Close()
 
@@ -51,9 +52,9 @@ func GetArtistById(id int) Artist {
 	return result
 }
 
-func GetAlbumByArtistId(id int) []Album {
+func GetAlbumByArtistId(id int, name string) []Album {
 	db := GetDb()
-	rows, _ := db.Query("select albums.id, albums.name, albums.release_date, albums.img from albums inner join artists_albums aa on albums.id = aa.album_id where artist_id = ?", id)
+	rows, _ := db.Query("select albums.id, albums.name, albums.release_date, albums.img from albums inner join artists_albums aa on albums.id = aa.album_id where artist_id = ? and name like ?", id, "%"+name+"%")
 
 	defer rows.Close()
 
@@ -87,7 +88,7 @@ type PokemonSpecies struct {
 }
 
 func InsertArtistsAlbums() {
-	artists := GetAllArtists()
+	artists := GetAllArtists("")
 	for _, artist := range artists {
 		fmt.Println("---- ----- ----- -----")
 		fmt.Println("---- Artist: , " + artist.Name + " -----")

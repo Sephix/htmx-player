@@ -1,20 +1,20 @@
 {{ define "components/artistContent.html" }}
-<content id="content" class="pt-24 flex flex-col gap-24 px-96">
+<content id="content" class="flex flex-col gap-24 px-96">
   <div class="flex items-center gap-8">
     <img
       style="view-transition-name: hero-{{ .artist.Id }}"
       class="w-80 h-80 rounded-md drop-shadow-lg"
       src="/image/{{ .artist.Img }}"
     />
-    <div class="flex flex-col items-start gap-2 text-slate-50">
+    <div class="flex flex-col items-start gap-2 text-zinc-50">
       <h1 class="font-bold text-4xl">{{ .artist.Name }}</h1>
       <span class="font-medium bg-rose-500 rounded-md px-4"
         >{{ len .albums }} Albums</span
       >
     </div>
   </div>
-  <div class="flex flex-col text-slate-50">
-    <div class="flex gap-8 border-b-slate-400 border-b h-8 mb-8">
+  <div class="flex flex-col text-zinc-50">
+    <div class="flex gap-8 border-b-zinc-400 border-b h-8 mb-8">
       <h2 class="border-b-rose-500 border-b-2 font-semibold">Discography</h2>
     </div>
     <div class="flex flex-wrap gap-8">
@@ -22,14 +22,15 @@
       .albums}}
       <div class="flex flex-col basis-80">
         <img
+          style="view-transition-name: hero-{{ $album.Img }}"
           class="w-80 h-80 rounded-md drop-shadow-lg"
           src="/image/{{ $album.Img }}"
         />
         <h3 class="font-medium">{{ $album.Name }}</h3>
-        <span class="font-light text-xs text-slate-100">
+        <span class="font-light text-xs text-zinc-100">
           from {{ $artist.Name }}
         </span>
-        <span class="font-light text-xs text-slate-100">
+        <span class="font-light text-xs text-zinc-100">
           Released: {{ $album.ReleaseDate }}
         </span>
       </div>

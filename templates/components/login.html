@@ -1,7 +1,15 @@
 {{ define "components/login.html" }}
-<content id="content" class="slide flex justify-center content-center items-center h-full w-full">
-  <button class="px-24 py-6 rounded-full drop-shadow-lg font-extrabold focus:drop-shadow-none bg-rose-600"
-    hx-post="/login" hx-swap="outerHTML transition:true" hx-target="#content">
+<content
+  id="content"
+  class="slide flex justify-center content-center items-center h-full w-full"
+>
+  <button
+    class="px-24 py-6 rounded-full drop-shadow-lg font-extrabold focus:drop-shadow-none bg-rose-600"
+    hx-post="/login"
+    hx-swap="outerHTML transition:true"
+    hx-target="body"
+    hx-select-oob="body"
+  >
     Login
   </button>
 </content>

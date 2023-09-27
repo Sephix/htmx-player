@@ -8,5 +8,6 @@ import (
 
 func App(router *gin.RouterGroup) {
 	router.GET("", home.RenderHome)
+	router.GET("artist", artist.RenderAllArtist)
 	router.GET("artist/:id", artist.RenderArtist)
 }
