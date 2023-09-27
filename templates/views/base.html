@@ -10,11 +10,15 @@
       defer
       src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
     ></script>
+    <script type="module" src="/assets/components/player/main.js"></script>
     <link rel="stylesheet" href="/assets/main.css" />
     <link rel="stylesheet" href="/assets/style.css" />
   </head>
-  <main id="main" class="dark:bg-zinc-900 bg-zinc-200 flexx w-full">
+  <main id="main" class="dark:bg-zinc-900 bg-zinc-200 flex w-full">
     {{template "main" .}}
   </main>
+  <footer class="sticky bottom-0 h-[6vh] bg-zinc-700 text-zinc-50 flex items-center pl-24">
+    <web-player disabled="true" class="flex grow gap-32"></web-player>
+  </footer>
 </html>
 {{ end }}
