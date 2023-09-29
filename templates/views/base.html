@@ -1,4 +1,4 @@
-{{ define "views/base.html" }}
+{{ define "views/baseTop" }}
 <html x-data="{ dark: true }" :class="dark ? &#39;dark&#39; : &#39;&#39;">
   <head>
     <script
@@ -15,10 +15,16 @@
     <link rel="stylesheet" href="/assets/style.css" />
   </head>
   <main id="main" class="dark:bg-zinc-900 bg-zinc-200 flex w-full">
-    {{template "main" .}}
+    {{end}} 
+
+
+{{ define "views/baseBottom" }}
   </main>
-  <footer class="sticky bottom-0 h-[6vh] bg-zinc-700 text-zinc-50 flex items-center pl-24">
-    <web-player disabled="true" class="flex grow gap-32"></web-player>
-  </footer>
+</html>
+{{ end }}
+
+{{ define "views/baseBottomWithFooter" }}
+  </main>
+  {{ template "components/player" .}}
 </html>
 {{ end }}

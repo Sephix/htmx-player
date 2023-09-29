@@ -1,22 +1,23 @@
 package controllers
 
 import (
-	"fmt"
-	"html/template"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sephix/htmx-player/internal/controllers/app"
 	"github.com/sephix/htmx-player/internal/controllers/image"
+	"github.com/sephix/htmx-player/internal/controllers/login"
+	"github.com/sephix/htmx-player/internal/controllers/song"
 	"github.com/sephix/htmx-player/internal/controllers/status"
 )
 
 func InitController(router *gin.Engine) {
 	status.Status(router)
 
-	router.GET("/login", renderLoginPage)
-	router.POST("/login", handleLogin)
+	loginGroup := router.Group("/login")
+	login.LoginController(loginGroup)
 	router.GET("/image/:id", image.GetImageById)
+	router.GET("/song/:id", song.GetSongById)
 	baseRouter := router.Group("/", cookieAuth)
 
 	app.App(baseRouter)
@@ -27,30 +28,4 @@ func cookieAuth(c *gin.Context) {
 	if err != nil || cookie != "true" {
 		c.Redirect(http.StatusFound, "/login")
 	}
-}
-
-func renderLoginPage(c *gin.Context) {
-	files := []string{
-		"./templates/views/base.html",
-		"./templates/views/loginPage.html",
-		"./templates/components/header.html",
-		"./templates/components/login.html",
-	}
-	tmpl, err := template.ParseFiles(files...)
-	if err != nil {
-		fmt.Println(err.Error())
-	} else {
-		tmpl.ExecuteTemplate(c.Writer, "views/base.html", gin.H{"showSearch": false})
-	}
-}
-
-func handleLogin(c *gin.Context) {
-	c.SetCookie("LOGGED", "true", 3600, "/", "localhost", false, true)
-
-	if header := c.GetHeader("Hx-Request"); header == "true" {
-		c.Header("HX-Location", "/")
-	} else {
-		c.Header("location", "/")
-	}
-	c.Status(http.StatusOK)
 }

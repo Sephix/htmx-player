@@ -1,4 +1,4 @@
-{{ define "main" }}
+{{ define "views/homePage" }} {{ template "views/baseTop" }}
 <div class="flex">
   {{ template "components/nav.html" .}}
   <div class="flex flex-col gap-16 grow">
@@ -6,4 +6,4 @@
     "components/homeContent.html" .artists }}
   </div>
 </div>
-{{ end }}
+{{ template "views/baseBottomWithFooter" . }} {{ end }}

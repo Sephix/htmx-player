@@ -22,11 +22,18 @@
       .albums}}
       <div class="flex flex-col basis-80">
         <img
-          style="view-transition-name: hero-{{ $album.Img }}"
           class="w-80 h-80 rounded-md drop-shadow-lg"
           src="/image/{{ $album.Img }}"
         />
-        <h3 class="font-medium">{{ $album.Name }}</h3>
+        <a
+          hx-get="/album/{{ $album.Id }}"
+          hx-target="#main"
+          hx-select="#main"
+          hx-swap="outerHTML transition:true"
+          hx-push-url="true"
+          class="font-medium cursor-pointer hover:underline"
+          >{{ $album.Name }}</a
+        >
         <span class="font-light text-xs text-zinc-100">
           from {{ $artist.Name }}
         </span>

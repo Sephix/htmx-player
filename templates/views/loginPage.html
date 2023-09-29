@@ -1,7 +1,5 @@
-{{ define "main" }}
-
-<div class="flex flex-col gap-16 grow">
-  {{ template "components/header.html" . }} {{ template "components/login.html"
-  . }}
-</div>
-{{ end}}
+{{ define "views/loginPage" }} {{ template "views/baseTop" }}
+<main id="main" class="dark:bg-zinc-900 bg-zinc-200 flex w-full h-screen">
+  {{ template "components/login.html" . }}
+</main>
+{{ template "views/baseBottomWithFooter" }} {{ end }}

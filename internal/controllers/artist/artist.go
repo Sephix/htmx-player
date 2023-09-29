@@ -2,9 +2,8 @@ package artist
 
 import (
 	"fmt"
+	"net/http"
 	"strconv"
-
-	"html/template"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sephix/htmx-player/internal/data"
@@ -14,23 +13,11 @@ import (
 func RenderAllArtist(c *gin.Context) {
 	filterValue := c.Query("artist")
 	artists := data.GetAllArtists(filterValue)
-	files := []string{
-		"./templates/views/base.html",
-		"./templates/views/homePage.html",
-		"./templates/components/header.html",
-		"./templates/components/nav.html",
-		"./templates/components/homeContent.html",
-	}
-	tmpl, err := template.ParseFiles(files...)
-	if err != nil {
-		fmt.Println(err.Error())
-	} else {
-		tmpl.ExecuteTemplate(c.Writer, "views/base.html", gin.H{
-			"artists": artists,
-			"nav":     []models.Nav{{"Home", "", false}, {"Artists", "artist", true}, {"Albums", "album", false}},
-			"search":  models.Search{"artist", filterValue, "/"},
-		})
-	}
+	c.HTML(http.StatusOK, "views/homePage", gin.H{
+		"artists": artists,
+		"nav":     []models.Nav{models.GetNav("Home", "", false), models.GetNav("Artists", "artist", true), models.GetNav("Albums", "album", false)},
+		"search":  models.GetSearch("artist", filterValue, "/"),
+	})
 }
 
 func RenderArtist(c *gin.Context) {
@@ -40,22 +27,10 @@ func RenderArtist(c *gin.Context) {
 	filterValue := c.Query("album")
 	albums := data.GetAlbumByArtistId(id, filterValue)
 
-	files := []string{
-		"./templates/views/base.html",
-		"./templates/views/artistPage.html",
-		"./templates/components/header.html",
-		"./templates/components/nav.html",
-		"./templates/components/artistContent.html",
-	}
-	tmpl, err := template.ParseFiles(files...)
-	if err != nil {
-		fmt.Println(err.Error())
-	} else {
-		tmpl.ExecuteTemplate(c.Writer, "views/base.html", gin.H{
-			"artist": artist,
-			"albums": albums,
-			"nav":    []models.Nav{{"Home", "", false}, {"Artists", "artist", true}, {"Albums", "album", false}},
-			"search": models.Search{"album", filterValue, fmt.Sprintf("/artist/%v", id)},
-		})
-	}
+	c.HTML(http.StatusOK, "views/artistPage", gin.H{
+		"artist": artist,
+		"albums": albums,
+		"nav":    []models.Nav{models.GetNav("Home", "", false), models.GetNav("Artists", "artist", true), models.GetNav("Albums", "album", false)},
+		"search": models.GetSearch("album", filterValue, fmt.Sprintf("/artist/%v", id)),
+	})
 }
