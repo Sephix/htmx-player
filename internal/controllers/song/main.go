@@ -1,6 +1,7 @@
 package song
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -11,6 +12,7 @@ import (
 
 func GetSongById(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
+	fmt.Println("Getting song: ", id)
 
 	result := data.GetSongById(id)
 

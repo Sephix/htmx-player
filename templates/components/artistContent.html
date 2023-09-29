@@ -22,6 +22,7 @@
       .albums}}
       <div class="flex flex-col basis-80">
         <img
+          style="view-transition-name: hero-{{ $album.Id }}"
           class="w-80 h-80 rounded-md drop-shadow-lg"
           src="/image/{{ $album.Img }}"
         />

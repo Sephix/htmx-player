@@ -9,6 +9,8 @@ class WebPlayer extends HTMLElement {
     super();
   }
 
+  init = false;
+
   button;
   audio;
   progress;
@@ -31,7 +33,7 @@ class WebPlayer extends HTMLElement {
     const outterButton = document.createElement("div");
     outterButton.setAttribute(
       "class",
-      "flex flex-col justify-center p-2 rounded-full ",
+      "flex flex-col justify-center  rounded-full ",
     );
     this.button = document.createElement("button");
     this.button.innerHTML = playSvg;
@@ -40,7 +42,10 @@ class WebPlayer extends HTMLElement {
       this.button.setAttribute("disabled", disabled);
       this.button.setAttribute("class", "cursor-not-allowed text-zinc-400");
     } else {
-      outterButton.setAttribute("class", "p-2 rounded-full hover:bg-zinc-300");
+      outterButton.setAttribute(
+        "class",
+        "h-14, w-12 rounded-full hover:bg-zinc-300 flex justify-center items-center",
+      );
     }
     outterButton.append(this.button);
 
@@ -90,10 +95,6 @@ class WebPlayer extends HTMLElement {
 
   playPauseAudio = () => {
     if (this.audio.paused) {
-      if (this.audio.ended) {
-        this.progress.setAttribute("value", "0");
-        this.progress.setAttribute("max", "0");
-      }
       this.audio.play();
       this.button.innerHTML = pauseSvg;
     } else {
@@ -104,12 +105,14 @@ class WebPlayer extends HTMLElement {
 
   playing = ({ target }) => {
     const { currentTime } = target;
+    console.log(currentTime);
     const seconds = Math.floor(currentTime);
     this.timestamp.innerText =
       "" +
       Math.floor(seconds / 60) +
       ":" +
       String(seconds % 60).padStart(2, "0");
+    this.progress.value = currentTime;
   };
 
   setCurrentTime = (e) => {
@@ -117,17 +120,26 @@ class WebPlayer extends HTMLElement {
   };
 
   onEnded = () => {
-    this.button.innerText = "Play";
+    this.button.innerHTML = playSvg;
   };
 
   onInit = () => {
-    const duration = Math.floor(this.audio.duration);
-    this.progress.setAttribute("max", duration);
-    this.duration.innerText =
-      "" +
-      Math.floor(duration / 60) +
-      ":" +
-      String(duration % 60).padStart(2, "0");
+    if (!this.init) {
+      const duration = Math.floor(
+        this.audio.duration === Infinity ? 30 : this.audio.duration,
+      );
+      this.progress.setAttribute("max", duration);
+      this.duration.innerText =
+        "" +
+        Math.floor(duration / 60) +
+        ":" +
+        String(duration % 60).padStart(2, "0");
+
+      if (this.getAttribute("autoplay") === "true") {
+        this.playPauseAudio();
+      }
+      this.init = true;
+    }
   };
 }
 

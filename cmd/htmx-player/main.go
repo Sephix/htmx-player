@@ -26,11 +26,7 @@ func main() {
 		}
 		fmt.Println("Duration:", duration)
 		hours := duration / 3600
-		if hours < 1 {
-			hours = 1
-		}
-		minutes := (duration - (3600 / hours)) / 60
-		fmt.Println("minutes:", minutes)
+		minutes := (duration - (3600 * hours)) / 60
 		return fmt.Sprintf("%d h %d", hours, minutes)
 	})
 

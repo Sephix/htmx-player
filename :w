@@ -30,7 +30,7 @@ func GetTrackAlbumId(id int) []Track {
 
 func GetTrackId(id int) Track {
 	db := GetDb()
-	row := db.QueryRow("select tracks.id, tracks.title, tracks.duration, tracks.song, tracks.deezer_id from tracks where tracks.id = ?", id)
+	row := db.row("select tracks.id, tracks.title, tracks.duration, tracks.song, tracks.deezer_id from tracks  where tracks.id = ?", id)
 
 	var track Track
 	row.Scan(&track.Id, &track.Title, &track.Duration, &track.Song, &track.DeezerId)

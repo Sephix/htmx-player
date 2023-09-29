@@ -2,6 +2,15 @@
 <footer
   class="sticky bottom-0 h-[6vh] bg-zinc-700 text-zinc-50 flex items-center pl-24"
 >
-  <web-player disabled="true" class="flex grow gap-32"></web-player>
+  <web-player id="player" disabled="true" class="flex grow gap-32"></web-player>
 </footer>
+{{ end }} {{ define "components/player/song" }}
+<web-player
+  id="player"
+  src="/song/{{ .track.Song }}"
+  title="{{ .track.Title }}"
+  artist="{{ .artist.Name }}"
+  autoplay="true"
+  class="flex grow gap-32"
+></web-player>
 {{ end }}

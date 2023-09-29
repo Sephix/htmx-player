@@ -1,7 +1,6 @@
 package album
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -15,8 +14,7 @@ func RenderAlbum(c *gin.Context) {
 
 	tracks := data.GetTrackAlbumId(id)
 	album := data.GetAlbumById(id)
-	fmt.Println(album)
-	artist := data.GetArtistById(1)
+	artist := data.GetArtistByAlbumId(id)
 
 	c.HTML(http.StatusOK, "views/albumPage", gin.H{
 		"artist": artist,

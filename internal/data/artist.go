@@ -41,3 +41,27 @@ func GetArtistById(id int) Artist {
 
 	return result
 }
+
+func GetArtistByAlbumId(id int) Artist {
+	db := GetDb()
+	row := db.QueryRow("select artists.id, artists.name, artists.img from artists inner join artists_albums aa on artists.id = aa.artist_id where aa.album_id = ? limit 1", id)
+
+	var result Artist
+	if err := row.Scan(&result.Id, &result.Name, &result.Img); err != nil {
+		fmt.Printf("%v\n", err)
+	}
+
+	return result
+}
+
+func GetArtistByTrackId(id int) Artist {
+	db := GetDb()
+	row := db.QueryRow("select artists.id, artists.name, artists.img from artists inner join artists_albums aa on artists.id = aa.artist_id  inner join tracks_albums ta on aa.album_id = ta.album_id where ta.track_id = ? limit 1", id)
+
+	var result Artist
+	if err := row.Scan(&result.Id, &result.Name, &result.Img); err != nil {
+		fmt.Printf("%v\n", err)
+	}
+
+	return result
+}

@@ -2,7 +2,7 @@
 <content id="content" class="flex flex-col gap-24 px-96 pb-32 grow">
   <div class="flex items-center gap-8">
     <img
-      style="view-transition-name: hero-{{ .album.Img }}"
+      style="view-transition-name: hero-{{ .album.Id }}"
       class="w-80 h-80 rounded-md drop-shadow-lg"
       src="/image/{{ .album.Img }}"
     />
@@ -44,8 +44,16 @@
     </div>
     <div class="flex flex-col gap-4">
       {{ $album := .album}} {{range $i, $track := .tracks}}
-      <div class="flex grow items-center hover:bg-zinc-700 rounded-s p-2">
-        <span class="basis-2/3 flex items-center gap-4 text-lg text-zinc-200">
+      <div
+        class="flex grow items-center hover:bg-zinc-700 rounded-s p-2"
+        hx-get="/player/{{ $track.Id }}"
+        hx-target="#player"
+        hx-select="#player"
+        hx-swap="outerHTML"
+      >
+        <span
+          class="basis-2/3 flex items-center gap-4 text-lg text-zinc-200 hover:underline cursor-pointer"
+        >
           <img
             class="w-12 h-12 rounded-sm drop-shadow-lg"
             src="/image/{{ $album.Img }}"
