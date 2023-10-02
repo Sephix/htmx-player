@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sephix/htmx-player/internal/data"
@@ -21,6 +22,7 @@ func RenderAllArtist(c *gin.Context) {
 }
 
 func RenderArtist(c *gin.Context) {
+	time.Sleep(250 * time.Millisecond)
 	id, _ := strconv.Atoi(c.Param("id"))
 	artist := data.GetArtistById(id)
 

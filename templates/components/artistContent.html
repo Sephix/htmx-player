@@ -17,14 +17,15 @@
     <div class="flex gap-8 border-b-zinc-400 border-b h-8 mb-8">
       <h2 class="border-b-rose-500 border-b-2 font-semibold">Discography</h2>
     </div>
-    <div class="flex flex-wrap gap-8">
+    <div id="albums-group" class="flex flex-wrap gap-8">
       {{ $artist := .artist}} {{ $ParseDate := .ParseDate}} {{range $album :=
       .albums}}
       <div class="flex flex-col basis-80">
         <img
-          style="view-transition-name: hero-{{ $album.Id }}"
-          class="w-80 h-80 rounded-md drop-shadow-lg"
+          style="::view-transition-group{ z-index: 0};view-transition-name: hero-{{ $album.Id }}; z-index: 0;"
+          class="w-80 h-80 rounded-md drop-shadow-lg album-cover"
           src="/image/{{ $album.Img }}"
+          lazy
         />
         <a
           hx-get="/album/{{ $album.Id }}"
@@ -33,6 +34,7 @@
           hx-swap="outerHTML transition:true"
           hx-push-url="true"
           class="font-medium cursor-pointer hover:underline"
+          hx-indicator="#hx-progress-bar"
           >{{ $album.Name }}</a
         >
         <span class="font-light text-xs text-zinc-100">

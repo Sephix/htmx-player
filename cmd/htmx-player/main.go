@@ -24,10 +24,9 @@ func main() {
 		for _, track := range tracks {
 			duration += int(track.Duration)
 		}
-		fmt.Println("Duration:", duration)
 		hours := duration / 3600
 		minutes := (duration - (3600 * hours)) / 60
-		return fmt.Sprintf("%d h %d", hours, minutes)
+		return fmt.Sprintf("%d h %02d", hours, minutes)
 	})
 
 	r.SetFuncMap(funcMap)

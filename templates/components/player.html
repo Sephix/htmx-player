@@ -1,6 +1,7 @@
 {{ define "components/player" }}
 <footer
-  class="sticky bottom-0 h-[6vh] bg-zinc-700 text-zinc-50 flex items-center pl-24"
+  style="view-transition-name: web-player"
+  class="sticky bottom-0 h-[6vh] bg-zinc-700 text-zinc-50 flex items-center pl-24 z-50"
 >
   <web-player id="player" disabled="true" class="flex grow gap-32"></web-player>
 </footer>
@@ -8,8 +9,10 @@
 <web-player
   id="player"
   src="/song/{{ .track.Song }}"
+  song-id="{{ .track.Id }}"
   title="{{ .track.Title }}"
   artist="{{ .artist.Name }}"
+  liked="{{ .track.IsLiked }}"
   autoplay="true"
   class="flex grow gap-32"
 ></web-player>

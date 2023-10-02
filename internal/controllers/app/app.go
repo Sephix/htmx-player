@@ -5,6 +5,7 @@ import (
 	"github.com/sephix/htmx-player/internal/controllers/album"
 	"github.com/sephix/htmx-player/internal/controllers/artist"
 	"github.com/sephix/htmx-player/internal/controllers/home"
+	"github.com/sephix/htmx-player/internal/controllers/like"
 	"github.com/sephix/htmx-player/internal/controllers/player"
 )
 
@@ -14,4 +15,8 @@ func App(router *gin.RouterGroup) {
 	router.GET("artist/:id", artist.RenderArtist)
 	router.GET("album/:id", album.RenderAlbum)
 	router.GET("player/:id", player.RenderPlayer)
+
+	router.PUT("track/like/:id", like.UpdateTrackLike)
+	router.PUT("track/like/current/:id", like.UpdateCurrentTrackLike)
+	router.GET("track/like/:id", like.IsTrackLike)
 }

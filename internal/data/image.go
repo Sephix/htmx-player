@@ -17,8 +17,7 @@ func GetImageById(id int) image.Image {
 		fmt.Printf("%v\n", err)
 		return nil
 	}
-	result, errJpg := jpeg.Decode(bytes.NewReader(img))
-	fmt.Println("errJpg", errJpg)
+	result, _ := jpeg.Decode(bytes.NewReader(img))
 	return result
 }
 

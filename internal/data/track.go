@@ -8,6 +8,7 @@ type Track struct {
 	Duration int64
 	Song     int64
 	DeezerId int64
+	IsLiked  bool
 }
 
 func GetTrackAlbumId(id int) []Track {
@@ -22,6 +23,7 @@ func GetTrackAlbumId(id int) []Track {
 		if err := rows.Scan(&track.Id, &track.Title, &track.Duration, &track.Song, &track.DeezerId); err != nil {
 			fmt.Printf("%v\n", err)
 		}
+		track.IsLiked = IsTrackLiked(track.Id)
 		result = append(result, track)
 	}
 
@@ -34,6 +36,7 @@ func GetTrackId(id int) Track {
 
 	var track Track
 	row.Scan(&track.Id, &track.Title, &track.Duration, &track.Song, &track.DeezerId)
+	track.IsLiked = IsTrackLiked(track.Id)
 
 	return track
 }

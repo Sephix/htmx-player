@@ -3,6 +3,7 @@ package album
 import (
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sephix/htmx-player/internal/data"
@@ -10,6 +11,7 @@ import (
 )
 
 func RenderAlbum(c *gin.Context) {
+	time.Sleep(250 * time.Millisecond)
 	id, _ := strconv.Atoi(c.Param("id"))
 
 	tracks := data.GetTrackAlbumId(id)
