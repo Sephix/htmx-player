@@ -109,14 +109,14 @@
         >
           <span
             class="flex gap-4 items-center cursor-pointer"
-            hx-get="/player/{{ $track.Id }}"
+            hx-get="/player/{{ $album.Id }}?track={{ $track.Id }}"
             hx-target="#player"
             hx-select="#player"
             hx-swap="outerHTML"
           >
             <img
               class="w-12 h-12 rounded-sm drop-shadow-lg"
-              src="/image/{{ $album.Img }}"
+              src="/image/{{ $track.Img }}"
             />
             {{ add $i 1 }}. {{ $track.Title }}</span
           >

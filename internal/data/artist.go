@@ -14,6 +14,7 @@ type Artist struct {
 func GetAllArtists(name string) []Artist {
 	fmt.Println("Find artists with name: ", name)
 	db := GetDb()
+	defer db.Close()
 	rows, _ := db.Query("select artists.id, artists.name, artists.img, artists.deezer_id from artists where artists.name like ?", "%"+name+"%")
 
 	defer rows.Close()
@@ -32,6 +33,7 @@ func GetAllArtists(name string) []Artist {
 
 func GetArtistById(id int) Artist {
 	db := GetDb()
+	defer db.Close()
 	row := db.QueryRow("select artists.id, artists.name, artists.img from artists where artists.id = ?", id)
 
 	var result Artist
@@ -44,6 +46,7 @@ func GetArtistById(id int) Artist {
 
 func GetArtistByAlbumId(id int) Artist {
 	db := GetDb()
+	defer db.Close()
 	row := db.QueryRow("select artists.id, artists.name, artists.img from artists inner join artists_albums aa on artists.id = aa.artist_id where aa.album_id = ? limit 1", id)
 
 	var result Artist
@@ -56,6 +59,7 @@ func GetArtistByAlbumId(id int) Artist {
 
 func GetArtistByTrackId(id int) Artist {
 	db := GetDb()
+	defer db.Close()
 	row := db.QueryRow("select artists.id, artists.name, artists.img from artists inner join artists_albums aa on artists.id = aa.artist_id  inner join tracks_albums ta on aa.album_id = ta.album_id where ta.track_id = ? limit 1", id)
 
 	var result Artist

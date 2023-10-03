@@ -1,7 +1,6 @@
 package player
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -10,13 +9,15 @@ import (
 )
 
 func RenderPlayer(c *gin.Context) {
-	id, _ := strconv.Atoi(c.Param("id"))
+	albumId, _ := strconv.Atoi(c.Param("id"))
+	trackId, _ := strconv.Atoi(c.Query("track"))
 
-	track := data.GetTrackId(id)
-	artist := data.GetArtistByTrackId(id)
+	track := data.GetTrackId(trackId)
+	artist := data.GetArtistByTrackId(trackId)
 
-	fmt.Println("Render song:", track.Title)
+	data.AddAblumToPlaylist(int64(albumId), int64(trackId))
 
+	c.Header("HX-Trigger", "playlist-update")
 	c.HTML(http.StatusOK, "components/player/song", gin.H{
 		"track":  track,
 		"artist": artist,

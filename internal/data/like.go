@@ -4,6 +4,7 @@ import "fmt"
 
 func GetLikeBySongId(id int64) bool {
 	db := GetDb()
+	defer db.Close()
 	row := db.QueryRow("select true from likes where song_id = ?", id)
 	var liked bool
 	if err := row.Scan(&liked); err != nil {
@@ -14,6 +15,7 @@ func GetLikeBySongId(id int64) bool {
 
 func InsertLike(trackID int64) bool {
 	db := GetDb()
+	defer db.Close()
 	_, err := db.Exec("INSERT INTO likes (song_id) VALUES (?)", trackID)
 	if err != nil {
 		fmt.Printf("Could not like song with id %v\n", err)
@@ -24,6 +26,7 @@ func InsertLike(trackID int64) bool {
 }
 func DeleteLike(trackID int64) bool {
 	db := GetDb()
+	defer db.Close()
 	_, err := db.Exec("delete from likes where song_id = ?", trackID)
 	if err != nil {
 		fmt.Printf("Could not not delete liked song with id %v\n", err)

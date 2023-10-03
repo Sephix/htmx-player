@@ -14,7 +14,7 @@ func RenderAlbum(c *gin.Context) {
 	time.Sleep(250 * time.Millisecond)
 	id, _ := strconv.Atoi(c.Param("id"))
 
-	tracks := data.GetTrackAlbumId(id)
+	tracks := data.GetTrackByAlbumId(id)
 	album := data.GetAlbumById(id)
 	artist := data.GetArtistByAlbumId(id)
 

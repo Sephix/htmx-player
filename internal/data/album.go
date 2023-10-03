@@ -12,6 +12,7 @@ type Album struct {
 
 func GetAlbumByArtistId(id int, name string) []Album {
 	db := GetDb()
+	defer db.Close()
 	rows, _ := db.Query("select albums.id, albums.name, albums.release_date, albums.img from albums inner join artists_albums aa on albums.id = aa.album_id where artist_id = ? and name like ?", id, "%"+name+"%")
 
 	defer rows.Close()
@@ -30,6 +31,7 @@ func GetAlbumByArtistId(id int, name string) []Album {
 
 func GetAlbumById(id int) Album {
 	db := GetDb()
+	defer db.Close()
 	row := db.QueryRow("select albums.id, albums.name, albums.release_date, albums.img from albums where albums.id = ? ", id)
 
 	var album Album

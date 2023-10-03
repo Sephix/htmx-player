@@ -11,6 +11,7 @@ import (
 
 func GetImageById(id int) image.Image {
 	db := GetDb()
+	defer db.Close()
 	row := db.QueryRow("select img from images where id = ?", id)
 	var img []byte
 	if err := row.Scan(&img); err != nil {
@@ -23,6 +24,7 @@ func GetImageById(id int) image.Image {
 
 func InsertImg(imgUrl string) int64 {
 	db := GetDb()
+	defer db.Close()
 	resp, err := http.Get(imgUrl)
 	if err != nil {
 		fmt.Println(err)
