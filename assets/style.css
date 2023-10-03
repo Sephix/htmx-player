@@ -163,7 +163,7 @@ input[type="range"]:disabled::-webkit-slider-thumb {
   display: none;
   top: 0;
   left: 0;
-  position: sticky;
+  position: fixed;
   height: 0.2rem;
   background: #f43f5e;
   z-index: 60;
