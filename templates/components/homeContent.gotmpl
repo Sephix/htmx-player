@@ -1,0 +1,14 @@
+{{ define "components/homeContent.html" }}
+<content id="content" class="slide flex flex-wrap justify-center content-center items-center h-full w-full pl-32">
+  <div class="flex flex-wrap gap-16">
+    {{range $artist := .}}
+    <div hx-get="/artist/{{ $artist.Id }}" hx-target="#main" hx-select="#main" hx-swap="outerHTML transition:true"
+      hx-push-url="true" hx-indicator="#hx-progress-bar" class="flex flex-col gap-2 w-72 h-72 items-center">
+      <img class="rounded-full transition-bubble hover:cursor-pointer hover:transition-bubble hover:-translate-y-1 hover:drop-shadow-xl hover:shadow-slate-800 hover:border-2 border-slate-800"
+        src="/image/{{ $artist.Img }}" />
+      <span class="text-zinc-50 font-bold">{{ $artist.Name }}</span>
+    </div>
+    {{end}}
+  </div>
+</content>
+{{ end }}

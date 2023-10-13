@@ -1,0 +1,9 @@
+{{ define "views/albumPage" }} 
+{{ template "views/baseTop" }} 
+{{ template "components/nav.html" .}}
+<div class="flex flex-col gap-16 grow">
+  {{ template "components/header.html" .}} 
+  {{ template "components/albumContent.html" . }}
+</div>
+{{ template "views/baseBottomWithFooter" . }} 
+{{ end }}

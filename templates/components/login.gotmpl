@@ -1,36 +1,31 @@
-{{ define "components/login/input"}}
-<fieldset class="flex flex-col grow" hx-target="this" hx-swap="outerHTML">
+{{ define "components/login/input" }}
+<fieldset
+  class="flex flex-col grow" 
+  hx-target="this" 
+  hx-swap="outerHTML"
+>
   <label for="{{ .Name }}">{{ .Label }}</label>
   <input
-    class="rounded-md p-2 bg-zinc-300 text-black {{ if .Invalid}} border border-red-400 {{ end }}"
+    class="rounded-md p-2 bg-zinc-300 text-black {{ if .Invalid }} border border-red-400 {{ end }}"
     id="{{ .Name }}"
     name="{{ .Name }}"
     type="{{ .Type }}"
     value="{{ .Value }}"
     required
-    {{
-    if
-    .Invalid
-    }}
-    invalid
-    {{
-    end
-    }}
-    {{
-    if
-    .Validator
-    }}
-    hx-post="{{ .Validator }}"
-    hx-trigger="change"
-    {{
-    end
-    }}
+    {{ if .Invalid }}
+      invalid
+    {{ end }}
+    {{ if .Validator }}
+      hx-post="{{ .Validator }}"
+      hx-trigger="change"
+    {{ end }}
   />
   {{ if .Invalid }}
   <span class="text-red-400">{{ .Error }}</span>
   {{ end }}
 </fieldset>
-{{ end }} {{ define "components/login/form" }}
+{{ end }}
+{{ define "components/login/form" }}
 <form
   class="flex flex-col gap-8 text-zinc-50 w-96"
   hx-post="/login"
@@ -38,8 +33,9 @@
   hx-swap="innerHTML"
   hx-trigger="submit"
 >
-  {{range $input := .Inputs}} {{ template "components/login/input" $input}} {{
-  end }}
+{{range $input := .Inputs}} 
+  {{ template "components/login/input" $input }} 
+{{ end }}
   <button
     type="submit"
     class="px-24 py-4 rounded-full drop-shadow-lg font-extrabold focus:drop-shadow-none bg-rose-600"
@@ -47,14 +43,15 @@
     Login
   </button>
   {{ if .Invalid}}
-  <span class="text-red-400">{{ .Error }}</span>
+    <span class="text-red-400">{{ .Error }}</span>
   {{ end }}
 </form>
-{{ end }} {{ define "components/login.html" }}
+{{ end }} 
+{{ define "components/login.html" }}
 <content
   id="content"
   class="slide flex justify-center content-center items-center h-full w-full"
 >
-  {{ template "components/login/form" .}}
+  {{ template "components/login/form" . }}
 </content>
 {{ end }}

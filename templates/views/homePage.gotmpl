@@ -1,0 +1,11 @@
+{{ define "views/homePage" }} 
+{{ template "views/baseTop" }}
+<div class="flex grow">
+  {{ template "components/nav.html" .}}
+  <div class="flex flex-col gap-16 grow">
+    {{ template "components/header.html" .}} 
+    {{ template "components/homeContent.html" .artists }}
+  </div>
+</div>
+{{ template "views/baseBottomWithFooter" . }} 
+{{ end }}

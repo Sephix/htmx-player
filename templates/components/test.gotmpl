@@ -1,0 +1,27 @@
+{{ define "test" }}
+<content>
+  <div>
+    {{ range $i, $elem := .playlist }}
+    <div 
+      class="flex grow items-center hover:bg-zinc-700 rounded-s p-2 {{ .Style.Nested }}"
+      {{ .AnoterOne.Nested }}
+      {{ if .IsActive }}
+        active
+      {{ else }}
+        disabled
+      {{ end }}
+    >
+      {{ if .IsActive }}
+      <div class="active">
+        I'm conditionally active
+      </div>
+      {{ else }}
+      <div class="disabled">
+        I'm conditionally disabled
+      </div>
+      {{ end }}
+    </div>
+    {{ end }}
+  </div>
+</content>
+{{ end }}

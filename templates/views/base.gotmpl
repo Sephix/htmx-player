@@ -11,21 +11,25 @@
       src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
     ></script>
     <script type="module" src="/assets/components/player/main.js"></script>
+    <script type="module" src="/assets/components/player/playlist.js"></script>
     <link rel="stylesheet" href="/assets/main.css" />
     <link rel="stylesheet" href="/assets/style.css" />
   </head>
+  <body>
   <div id="hx-progress-bar"></div>
   <main id="main" class="dark:bg-zinc-900 bg-zinc-200 flex w-full" hx-history-elt>
-    {{end}} 
+{{end}} 
 
 
 {{ define "views/baseBottom" }}
   </main>
+  </body>
 </html>
 {{ end }}
 
 {{ define "views/baseBottomWithFooter" }}
   </main>
   {{ template "components/player" .}}
+  </body>
 </html>
 {{ end }}

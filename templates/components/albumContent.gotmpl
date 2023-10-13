@@ -1,4 +1,5 @@
-{{ define "components/track/like" }} {{ if .}}
+{{ define "components/track/like" }} 
+{{ if .}}
 <svg
   xmlns="http://www.w3.org/2000/svg"
   viewBox="0 0 24 24"
@@ -43,7 +44,7 @@
 {{ end }} {{ define "components/albumContent.html" }}
 <content
   id="content"
-  class="flex flex-col gap-24 px-96 pb-32 grow"
+  class="flex flex-col gap-24 px-48 pb-32 grow"
   hx-get="/album/{{ .album.Id }}"
   hx-swap="outerHTML"
   hx-trigger="liking-current-update from:body"
