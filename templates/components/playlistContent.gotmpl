@@ -1,86 +1,86 @@
 {{ define "components/playlistContent" }}
-<content
-  id="playlist-content"
-  hx-preserve="playlist-content"
-  class="flex bg-zinc-950 h-screen w-screen ease-in-out"
-  hx-get="/playlist"
-  hx-swap="outerHTML"
-  hx-trigger="playlist-update from:body"
-  hx-select="#playlist-content"
-  hx-disinherit="hx-select hx-trigger hx-swap"
->
-  <div class="flex flex-col justify-center items-center gap-8">
-    <img
-      style="view-transition-name: hero-{{ .album.Id }}"
-      class="w-80 h-80 rounded-md drop-shadow-lg"
-      src="/image/{{ .current.Track.Img }}"
-      lazy
-    />
-    <div class="flex flex-col items-start gap-4 text-zinc-50">
-      <h1 class="font-bold text-4xl">{{ .current.Track.Title }}</h1>
-      <span
-        class="font-medium flex items-center gap-4 hover:underline cursor-pointer"
-      >
-        {{ .current.Artist.Name }}</span
-      >
-    </div>
-  </div>
-  <div class="flex flex-col grow text-zinc-400">
-    <div class="flex border-b-zinc-600 border-b h-8 mb-8 pb-12">
-      <h2 class="basis-2/3 font-semibold">Tracks</h2>
-      <span class="basis-32"> </span>
-      <span class="basis-32">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="w-6 h-6"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
-      </span>
-    </div>
-    <div class="flex flex-col grow gap-4 overflow-y-scroll h-full">
-      {{ range $i, $elem := .playlist }}
-      <div class="flex grow items-center hover:bg-zinc-700 rounded-s p-2">
+  <content
+    id="playlist-content"
+    hx-preserve="playlist-content"
+    class="flex bg-zinc-950 h-screen w-screen ease-in-out"
+    hx-get="/playlist"
+    hx-swap="outerHTML"
+    hx-trigger="playlist-update from:body"
+    hx-select="#playlist-content"
+    hx-disinherit="hx-select hx-trigger hx-swap"
+  >
+    <div class="flex flex-col justify-center items-center gap-8">
+      <img
+        style="view-transition-name: hero-{{ .album.Id }}"
+        class="w-80 h-80 rounded-md drop-shadow-lg"
+        src="/image/{{ .current.Track.Img }}"
+        lazy
+      />
+      <div class="flex flex-col items-start gap-4 text-zinc-50">
+        <h1 class="font-bold text-4xl">{{ .current.Track.Title }}</h1>
         <span
-          class="basis-2/3 flex items-center gap-4 text-lg text-zinc-200 hover:underline"
+          class="font-medium flex items-center gap-4 hover:underline cursor-pointer"
         >
-          <span
-            class="flex gap-4 items-center cursor-pointer"
-            hx-get="/player/{{ $elem.Track.Id }}"
-            hx-target="#player"
-            hx-select="#player"
-            hx-swap="outerHTML"
+          {{ .current.Artist.Name }}</span
+        >
+      </div>
+    </div>
+    <div class="flex flex-col grow text-zinc-400">
+      <div class="flex border-b-zinc-600 border-b h-8 mb-8 pb-12">
+        <h2 class="basis-2/3 font-semibold">Tracks</h2>
+        <span class="basis-32"> </span>
+        <span class="basis-32">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
           >
-            <img
-              class="w-12 h-12 rounded-sm drop-shadow-lg"
-              src="/image/{{ $elem.Track.Img }}"
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
             />
-            {{ add $i 1 }}. {{ $elem.Track.Title }}</span
-          >
-        </span>
-        <button
-          id="like-container"
-          class="basis-32 cursor-pointer like-container"
-          hx-put="/track/like/{{ $elem.Track.Id}}"
-          hx-swap="innerHTML"
-          hx-trigger="click"
-        >
-          {{ template "components/track/like" $elem.Track.IsLiked }}
-        </button>
-        <span class="basis-1/6 font-semibold text-md text-zinc-100">
-          {{ parseDuration $elem.Track.Duration }}
+          </svg>
         </span>
       </div>
-      {{ end }}
+      <div class="flex flex-col grow gap-4 overflow-y-scroll h-full">
+        {{ range $i, $elem := .playlist }}
+          <div class="flex grow items-center hover:bg-zinc-700 rounded-s p-2">
+            <span
+              class="basis-2/3 flex items-center gap-4 text-lg text-zinc-200 hover:underline"
+            >
+              <span
+                class="flex gap-4 items-center cursor-pointer"
+                hx-get="/player/{{ $elem.Track.Id }}"
+                hx-target="#player"
+                hx-select="#player"
+                hx-swap="outerHTML"
+              >
+                <img
+                  class="w-12 h-12 rounded-sm drop-shadow-lg"
+                  src="/image/{{ $elem.Track.Img }}"
+                />
+                {{ add $i 1 }}. {{ $elem.Track.Title }}</span
+              >
+            </span>
+            <button
+              id="like-container"
+              class="basis-32 cursor-pointer like-container"
+              hx-put="/track/like/{{ $elem.Track.Id }}"
+              hx-swap="innerHTML"
+              hx-trigger="click"
+            >
+              {{ template "components/track/like" $elem.Track.IsLiked }}
+            </button>
+            <span class="basis-1/6 font-semibold text-md text-zinc-100">
+              {{ parseDuration $elem.Track.Duration }}
+            </span>
+          </div>
+        {{ end }}
+      </div>
     </div>
-  </div>
-</content>
+  </content>
 {{ end }}

@@ -1,25 +1,26 @@
 {{ define "components/player" }}
-<footer
-  style="view-transition-name: web-player"
-  class="sticky z-20 bottom-0 h-[6vh] text-zinc-50 block"
->
+  <footer
+    style="view-transition-name: web-player"
+    class="sticky z-20 bottom-0 h-[6vh] text-zinc-50 block"
+  >
+    <web-player
+      id="player"
+      disabled="true"
+      class="flex grow justify-center items-center gap-12 z-50 h-full bg-zinc-700 "
+    >
+    </web-player>
+  </footer>
+{{ end }}
+{{ define "components/player/song" }}
   <web-player
     id="player"
-    disabled="true"
-    class="flex grow justify-center items-center gap-12 z-50 h-full bg-zinc-700 "
-    
+    src="/song/{{ .track.Song }}"
+    song-id="{{ .track.Id }}"
+    title="{{ .track.Title }}"
+    artist="{{ .artist.Name }}"
+    liked="{{ .track.IsLiked }}"
+    autoplay="true"
+    class="flex grow justify-center items-center gap-12 z-50 h-full bg-zinc-700"
   >
   </web-player>
-</footer>
-{{ end }} 
-{{ define "components/player/song" }}
-<web-player
-  id="player" src="/song/{{ .track.Song }}" song-id="{{ .track.Id }}"
-  title="{{ .track.Title }}"
-  artist="{{ .artist.Name }}"
-  liked="{{ .track.IsLiked }}"
-  autoplay="true"
-  class="flex grow justify-center items-center gap-12 z-50 h-full bg-zinc-700"
->
-</web-player>
 {{ end }}

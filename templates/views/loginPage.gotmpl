@@ -1,7 +1,7 @@
-{{ define "views/loginPage" }} 
-{{ template "views/baseTop" }}
-<main id="main" class="dark:bg-zinc-900 bg-zinc-200 flex w-full h-screen">
-  {{ template "components/login.html" . }}
-</main>
-{{ template "views/baseBottom" }} 
+{{ define "views/loginPage" }}
+  {{ template "views/baseTop" }}
+  <main id="main" class="dark:bg-zinc-900 bg-zinc-200 flex w-full h-screen">
+    {{ template "components/login.html" . }}
+  </main>
+  {{ template "views/baseBottom" }}
 {{ end }}
