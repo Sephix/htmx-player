@@ -24,8 +24,8 @@
     <ul class="flex flex-col grow gap-8 justify-center text-zinc-50 font-bold">
       {{ range $item := .nav }}
         {{ if $item.IsActive }}
-          {{ template "activeElement"
-            $item
+          {{ template
+            "activeElement" $item
           }}
         {{ else }}
           {{ template "defaultElement" $item }}

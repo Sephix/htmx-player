@@ -26,7 +26,8 @@
         hx-push-url="true"
         hx-indicator="#hx-progress-bar"
       >
-        {{ $artist := .artist }} {{ $ParseDate := .ParseDate }}
+        {{ $artist := .artist }}
+        {{ $ParseDate := .ParseDate }}
         {{ range $album :=
           .albums
         }}

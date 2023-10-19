@@ -1,0 +1,24 @@
+{{ define "components/playlist/preview/default" }}
+  <img />
+  <span>Playlist</span>
+{{ end }}
+
+{{ define "components/playlist/preview/song" }}
+  <img class="h-8 w-8 rounded-md" src="/image/{{ .Img }}" />
+  <span>Playlist</span>
+{{ end }}
+
+{{ define "components/playlist/preview" }}
+  <div
+    class="flex gap-4 hover:bg-zinc-400 p-4 rounded-md items-center"
+    hx-get="/playlist/preview"
+    hx-swap="outerHTML"
+    hx-trigger="playlist-update from:body"
+  >
+    {{ if . }}
+      {{ template "components/playlist/preview/song" . }}
+    {{ else }}
+      {{ template "components/playlist/preview/default" }}
+    {{ end }}
+  </div>
+{{ end }}

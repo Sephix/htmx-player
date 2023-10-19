@@ -23,3 +23,27 @@ func RenderPlayer(c *gin.Context) {
 		"artist": artist,
 	})
 }
+
+func PlaySong(c *gin.Context) {
+	trackId, _ := strconv.Atoi(c.Param("id"))
+
+	track := data.GetTrackId(trackId)
+	artist := data.GetArtistByTrackId(trackId)
+
+	c.Header("HX-Trigger", "play-song")
+	c.HTML(http.StatusOK, "components/player/song", gin.H{
+		"track":  track,
+		"artist": artist,
+	})
+}
+
+func PlayCurrentSong(c *gin.Context) {
+	trackId := data.GetCurrentPlaylistTrack()
+
+	track := data.GetTrackId(int(trackId))
+	artist := data.GetArtistByTrackId(int(trackId))
+	c.HTML(http.StatusOK, "components/player/song", gin.H{
+		"track":  track,
+		"artist": artist,
+	})
+}

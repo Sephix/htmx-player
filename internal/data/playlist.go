@@ -44,9 +44,6 @@ func GetPlaylist() []PlaylistElement {
 	result := make([]PlaylistElement, 0, 20)
 	db := GetDb()
 	defer db.Close()
-	currentQuery := db.QueryRow("SELECT max(current) from playlists")
-	var current int64
-	currentQuery.Scan(&current)
 	rows, err := db.Query(
 		"select t.id, t.title, t.duration, t.song, t.deezer_id, a.img, " +
 			"a.id, " +
@@ -67,10 +64,64 @@ func GetPlaylist() []PlaylistElement {
 				fmt.Println("Could not scan row")
 				fmt.Printf("%v\n", err)
 			} else {
+				playlistElement.Track.IsLiked = IsTrackLiked(playlistElement.Track.Id)
 				playlistElement.Artist = GetArtistByTrackId(int(playlistElement.Track.Id))
 				result = append(result, playlistElement)
 			}
 		}
+		rows.Close()
 	}
 	return result
+}
+
+func SetCurrentPlaylistTrack(trackId int64) {
+	db := GetDb()
+	defer db.Close()
+	_, err := db.Exec("update playlists set current = 0")
+	if err != nil {
+		fmt.Println("Could not set current track")
+		fmt.Printf("%v\n", err)
+	} else {
+		_, err := db.Exec("update playlists set current = 1 where track_id = ?", trackId)
+		if err != nil {
+			fmt.Println("Could not set current track")
+			fmt.Printf("%v\n", err)
+		}
+	}
+}
+func GetCurrentPlaylistTrack() int64 {
+	db := GetDb()
+	defer db.Close()
+	row := db.QueryRow("select track_id from playlists where current = 1")
+	var result int64
+	row.Scan(&result)
+	return result
+}
+
+func SetNextTrackPlaylist() bool {
+	db := GetDb()
+	defer db.Close()
+
+	row := db.QueryRow("select \"order\" from playlists where current = 1")
+	var currentSong int64
+	row.Scan(&currentSong)
+
+	row = db.QueryRow("select max(\"order\") from playlists")
+	var maxOrder int64
+	row.Scan(&maxOrder)
+
+	_, err := db.Exec("update playlists set current = 0 where current = 1")
+	if err != nil {
+		fmt.Println("Could not update playlist current")
+		fmt.Printf("%v\n", err)
+		return false
+	}
+
+	_, err = db.Exec("update playlists set current = 1 where \"order\" = ?", (currentSong+1)%(maxOrder+1))
+	if err != nil {
+		fmt.Println("Could not update playlist current playing song")
+		fmt.Printf("%v\n", err)
+		return false
+	}
+	return true
 }

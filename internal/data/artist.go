@@ -15,17 +15,19 @@ func GetAllArtists(name string) []Artist {
 	fmt.Println("Find artists with name: ", name)
 	db := GetDb()
 	defer db.Close()
-	rows, _ := db.Query("select artists.id, artists.name, artists.img, artists.deezer_id from artists where artists.name like ?", "%"+name+"%")
-
-	defer rows.Close()
-
+	rows, err := db.Query("select artists.id, artists.name, artists.img, artists.deezer_id from artists where artists.name like ?", "%"+name+"%")
 	result := make([]Artist, 0)
-	for rows.Next() {
-		var artist Artist
-		if err := rows.Scan(&artist.Id, &artist.Name, &artist.Img, &artist.DeezerID); err != nil {
-			fmt.Printf("%v\n", err)
+	if err != nil {
+		fmt.Println(err.Error())
+	} else {
+		for rows.Next() {
+			fmt.Println("found row")
+			var artist Artist
+			if err := rows.Scan(&artist.Id, &artist.Name, &artist.Img, &artist.DeezerID); err != nil {
+				fmt.Printf("%v\n", err)
+			}
+			result = append(result, artist)
 		}
-		result = append(result, artist)
 	}
 
 	return result

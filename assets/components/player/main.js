@@ -14,7 +14,8 @@ class WebPlayer extends HTMLElement {
 
   init = false;
 
-  button;
+  playButton;
+  nextButton;
   audio;
   progress;
   timestamp;
@@ -38,19 +39,33 @@ class WebPlayer extends HTMLElement {
       "class",
       "flex flex-col justify-center  rounded-full ",
     );
-    this.button = document.createElement("button");
-    this.button.innerHTML = playSvg;
-    this.button.addEventListener("click", this.playPauseAudio);
+    this.playButton = document.createElement("button");
+    this.playButton.innerHTML = playSvg;
+    this.playButton.addEventListener("click", this.playPauseAudio);
     if (disabled) {
-      this.button.setAttribute("disabled", disabled);
-      this.button.setAttribute("class", "cursor-not-allowed text-zinc-400");
+      this.playButton.setAttribute("disabled", disabled);
+      this.playButton.setAttribute("class", "cursor-not-allowed text-zinc-400");
     } else {
       outterButton.setAttribute(
         "class",
-        "h-14, w-12 rounded-full hover:bg-zinc-300 flex justify-center items-center",
+        "h-14 w-14 rounded-full hover:bg-zinc-300 flex justify-center items-center",
       );
     }
-    outterButton.append(this.button);
+    outterButton.append(this.playButton);
+
+    const outterNextButton = document.createElement("div");
+    outterNextButton.setAttribute(
+      "class",
+      "flex flex-col justify-center  rounded-full ",
+    );
+    this.nextButton = document.createElement("button");
+    this.nextButton.innerText = "NEXT";
+    this.nextButton.addEventListener("click", this.playNext);
+    outterNextButton.setAttribute(
+      "class",
+      "h-14 w-14 rounded-full hover:bg-zinc-300 flex justify-center items-center",
+    );
+    outterNextButton.append(this.nextButton);
 
     // ARTIST AND LIKE
     const songTitle = this.getAttribute("title");
@@ -116,16 +131,21 @@ class WebPlayer extends HTMLElement {
     info.append(firstLine, this.time);
     this.append(this.audio);
     this.append(outterButton);
+    this.append(outterNextButton);
     this.append(info);
+
+    // Playlist
+    const playlist = document.createElement("custom-playlist");
+    playlist.setAttribute("id", "playlist-content");
   }
 
   playPauseAudio = () => {
     if (this.audio.paused) {
       this.audio.play();
-      this.button.innerHTML = pauseSvg;
+      this.playButton.innerHTML = pauseSvg;
     } else {
       this.audio.pause();
-      this.button.innerHTML = playSvg;
+      this.playButton.innerHTML = playSvg;
     }
   };
 
@@ -145,7 +165,14 @@ class WebPlayer extends HTMLElement {
   };
 
   onEnded = () => {
-    this.button.innerHTML = playSvg;
+    this.playButton.innerHTML = playSvg;
+    this.playNext();
+  };
+
+  playNext = () => {
+    fetch("/playlist/next", { method: "POST" }).then(() =>
+      document.body.dispatchEvent(new Event("play-song")),
+    );
   };
 
   onInit = () => {

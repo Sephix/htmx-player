@@ -1,9 +1,6 @@
 {{ define "components/homeContent.html" }}
-  <content
-    id="content"
-    class="slide flex flex-wrap justify-center content-center items-center h-full w-full pl-32"
-  >
-    <div class="flex flex-wrap gap-16">
+  <content id="content" class="slide flex flex-wrap h-full w-full pl-32">
+    <div class="flex flex-wrap content-start gap-12">
       {{ range $artist := . }}
         <div
           hx-get="/artist/{{ $artist.Id }}"

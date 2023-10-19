@@ -39,10 +39,15 @@ func GetTrackByAlbumId(id int) []Track {
 
 func GetTrackId(id int) Track {
 	db := GetDb()
-	row := db.QueryRow("select tracks.id, tracks.title, tracks.duration, tracks.song, tracks.deezer_id from tracks where tracks.id = ?", id)
+	defer db.Close()
+	row := db.QueryRow("select tracks.id, tracks.title, tracks.duration, tracks.song, tracks.deezer_id, a.img "+
+		"from tracks "+
+		"inner join tracks_albums ta on tracks.id = ta.track_id "+
+		"inner join albums a on a.id = ta.album_id "+
+		"where tracks.id = ?", id)
 
 	var track Track
-	row.Scan(&track.Id, &track.Title, &track.Duration, &track.Song, &track.DeezerId)
+	row.Scan(&track.Id, &track.Title, &track.Duration, &track.Song, &track.DeezerId, &track.Img)
 	track.IsLiked = IsTrackLiked(track.Id)
 
 	return track
