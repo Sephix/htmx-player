@@ -11,6 +11,16 @@
       hx-swap="outerHTML"
       hx-trigger="play-song from:body"
     >
+    <div
+      class="h-14 w-14 rounded-full hover:bg-zinc-300 flex justify-center items-center"
+    >
+      <button id="player-play-button"></button>
+    </div>
+    <div
+      class="h-14 w-14 rounded-full hover:bg-zinc-300 flex justify-center items-center"
+    >
+      <button id="player-next-button">next</button>
+    </div>
     </web-player>
     <custom-playlist class="bg-zinc-700 basis-1/6 flex items-center" />
   </footer>
@@ -24,9 +34,51 @@
     hx-swap="outerHTML"
     hx-trigger="play-song from:body"
     song-id="{{ .track.Id }}"
-    title="{{ .track.Title }}"
     artist="{{ .artist.Name }}"
     liked="{{ .track.IsLiked }}"
     autoplay="true"
-  />
+  >
+    <div
+      class="h-14 w-14 rounded-full hover:bg-zinc-300 flex justify-center items-center"
+    >
+      <button id="player-play-button"></button>
+    </div>
+    <div
+      class="h-14 w-14 rounded-full hover:bg-zinc-300 flex justify-center items-center"
+    >
+      <button id="player-next-button">next</button>
+    </div>
+    <div class="flex flex-col gap-2 basis-3/4 justify-center">
+      <div class="flex justify-between text-sm">
+        <span>{{ .track.Title }} - {{ .artist.Name }}</span>
+        <div
+          hx-get="/track/like/{{ .track.Id }}" 
+          hx-swap="innerHTML"
+          hx-target="#player-like-button"
+          hx-trigger="liking-update from:body"
+        >
+          <button
+            id="player-like-button"
+            hx-put="/track/like/current/{{ .track.Id }}"
+            hx-swap="innerHTML"
+            hx-trigger="click"
+            class="cursor-pointer"
+          >
+            {{ template "components/track/like" .track.IsLiked }}
+          </button>
+        </div>
+      </div>
+      <div class="flex basis-3/4 gap-4 items-center">
+        <span id="player-progress-time">00:00</span> 
+        <input
+          id="player-progress-bar"
+          type="range"
+          value="1"
+          max="0"
+          class="grow"
+        />
+        <span id="player-duration-time">00:00</span> 
+      </div>
+    </div>
+  </web-player>
 {{ end }}

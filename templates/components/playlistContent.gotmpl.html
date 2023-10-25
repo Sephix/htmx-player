@@ -62,7 +62,7 @@
         hx-target="#playlist-tracks"
         hx-select="#playlist-tracks"
         hx-swap="outerHTML"
-        hx-trigger="play-song from:body"
+        hx-trigger="play-song from:body, liking-current-update from:body, liking-update from:body"
         hx-disinherit="*"
       >
         {{ range $i, $elem := .playlist }}

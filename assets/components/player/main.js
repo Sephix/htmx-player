@@ -23,120 +23,29 @@ class WebPlayer extends HTMLElement {
   time;
 
   connectedCallback() {
-    const disabled = this.getAttribute("disabled") == "true";
     const src = this.getAttribute("src");
-
-    this.audio = document.createElement("audio");
     if (src) {
+      this.audio = document.createElement("audio");
       this.audio.setAttribute("src", src);
       this.audio.addEventListener("timeupdate", this.playing);
       this.audio.addEventListener("ended", this.onEnded);
       this.audio.addEventListener("canplaythrough", this.onInit);
+
+      this.playButton = document.getElementById("player-play-button");
+      this.playButton.addEventListener("click", this.playPauseAudio);
+
+      this.nextButton = document.getElementById("player-next-button");
+      this.nextButton.addEventListener("click", this.playNext);
+
+      // TIME
+      this.progress = document.getElementById("player-progress-bar");
+      this.progress.addEventListener("click", this.setCurrentTime);
+
+      this.timestamp = document.getElementById("player-progress-time");
+      this.duration = document.getElementById("player-duration-time");
+      // INFO
+      this.append(this.audio);
     }
-
-    const outterButton = document.createElement("div");
-    outterButton.setAttribute(
-      "class",
-      "flex flex-col justify-center  rounded-full ",
-    );
-    this.playButton = document.createElement("button");
-    this.playButton.innerHTML = playSvg;
-    this.playButton.addEventListener("click", this.playPauseAudio);
-    if (disabled) {
-      this.playButton.setAttribute("disabled", disabled);
-      this.playButton.setAttribute("class", "cursor-not-allowed text-zinc-400");
-    } else {
-      outterButton.setAttribute(
-        "class",
-        "h-14 w-14 rounded-full hover:bg-zinc-300 flex justify-center items-center",
-      );
-    }
-    outterButton.append(this.playButton);
-
-    const outterNextButton = document.createElement("div");
-    outterNextButton.setAttribute(
-      "class",
-      "flex flex-col justify-center  rounded-full ",
-    );
-    this.nextButton = document.createElement("button");
-    this.nextButton.innerText = "NEXT";
-    this.nextButton.addEventListener("click", this.playNext);
-    outterNextButton.setAttribute(
-      "class",
-      "h-14 w-14 rounded-full hover:bg-zinc-300 flex justify-center items-center",
-    );
-    outterNextButton.append(this.nextButton);
-
-    // ARTIST AND LIKE
-    const songTitle = this.getAttribute("title");
-    const artistName = this.getAttribute("artist");
-    const firstLine = document.createElement("div");
-    firstLine.setAttribute("class", "flex justify-between text-sm");
-    if (songTitle && artistName) {
-      const artist = document.createElement("span");
-      artist.innerText = `${songTitle} - ${artistName}`;
-      const favorite = document.createElement("div");
-      if (this.getAttribute("liked") === "true") {
-        favorite.innerHTML = likedSvg;
-      } else {
-        favorite.innerHTML = likeSvg;
-      }
-      favorite.setAttribute("id", "like-svg");
-      favorite.setAttribute(
-        "hx-get",
-        "/track/like/" + this.getAttribute("song-id"),
-      );
-      favorite.setAttribute("hx-swap", "innerHTML");
-      favorite.setAttribute("hx-trigger", "liking-update from:body");
-
-      const favoriteContainer = document.createElement("div");
-      favoriteContainer.setAttribute(
-        "hx-put",
-        "/track/like/current/" + this.getAttribute("song-id"),
-      );
-      favoriteContainer.setAttribute("hx-swap", "innerHTML");
-      favoriteContainer.setAttribute("hx-trigger", "click");
-      favoriteContainer.setAttribute("hx-target", "#like-svg");
-      favoriteContainer.setAttribute("class", "cursor-pointer");
-      favoriteContainer.append(favorite);
-
-      firstLine.append(artist, favoriteContainer);
-    }
-
-    // TIME
-    this.progress = document.createElement("input");
-    this.progress.setAttribute("type", "range");
-    this.progress.setAttribute("value", "0");
-    this.progress.setAttribute("max", "0");
-    this.progress.setAttribute("class", "grow");
-    if (disabled) {
-      this.progress.setAttribute("disabled", disabled);
-    }
-    this.progress.addEventListener("click", this.setCurrentTime);
-
-    this.timestamp = document.createElement("span");
-    this.timestamp.innerText = "00:00";
-    this.duration = document.createElement("span");
-    this.duration.innerText = "00:00";
-
-    this.time = document.createElement("div");
-    this.time.append(this.timestamp);
-    this.time.append(this.progress);
-    this.time.append(this.duration);
-    this.time.setAttribute("class", "flex basis-3/4 gap-4 items-center");
-
-    // INFO
-    const info = document.createElement("div");
-    info.setAttribute("class", "flex flex-col gap-2 basis-3/4 justify-center");
-    info.append(firstLine, this.time);
-    this.append(this.audio);
-    this.append(outterButton);
-    this.append(outterNextButton);
-    this.append(info);
-
-    // Playlist
-    const playlist = document.createElement("custom-playlist");
-    playlist.setAttribute("id", "playlist-content");
   }
 
   playPauseAudio = () => {
